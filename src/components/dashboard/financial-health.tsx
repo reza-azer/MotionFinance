@@ -1,14 +1,13 @@
+
 "use client";
 
 import React from 'react';
 import { useTransactions } from '@/context/transactions-context';
-import { useFinancialHealth } from '@/context/financial-health-context';
 import { Progress } from '@/components/ui/progress';
 import { Lightbulb, TrendingUp, TrendingDown, LoaderCircle } from 'lucide-react';
 
 const FinancialHealth = () => {
-  const { transactions } = useTransactions();
-  const { insights, cashflowMessage, isLoading } = useFinancialHealth();
+  const { transactions, insights, cashflowMessage, isInsightsLoading } = useTransactions();
 
   const totalIncome = transactions
     .filter(t => t.type === 'income')
@@ -38,7 +37,7 @@ const FinancialHealth = () => {
       
       <div>
         <h4 className="text-lg font-semibold font-headline mb-3">Spending Insights</h4>
-        {isLoading ? (
+        {isInsightsLoading ? (
           <div className="flex items-center justify-center h-24">
             <LoaderCircle className="animate-spin text-accent" />
           </div>
@@ -50,7 +49,7 @@ const FinancialHealth = () => {
                 <span className="text-sm text-muted-foreground">{insight}</span>
               </li>
             ))}
-             {insights.length === 0 && !isLoading && (
+             {insights.length === 0 && !isInsightsLoading && (
                  <p className="text-sm text-muted-foreground">No insights available yet. Add more transactions!</p>
             )}
           </ul>

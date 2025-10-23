@@ -10,13 +10,11 @@ import FinancialHealth from './financial-health';
 import IncomeExpenseChart from './charts/income-expense-chart';
 import { ScrollArea } from '../ui/scroll-area';
 import BudgetTracker from './budget/budget-tracker';
-import { useBudget } from '@/context/budget-context';
 import BudgetSetup from './budget/budget-setup';
 import ExpenseTrendChart from './charts/expense-trend-chart';
 
 const Dashboard = () => {
-  const { transactions } = useTransactions();
-  const { budget } = useBudget();
+  const { transactions, budget } = useTransactions();
   const expenseTransactions = transactions.filter(t => t.type === 'expense');
 
   return (

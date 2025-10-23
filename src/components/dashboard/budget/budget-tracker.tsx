@@ -1,8 +1,7 @@
 
 'use client';
 
-import React, { useEffect } from 'react';
-import { useBudget } from '@/context/budget-context';
+import React from 'react';
 import { useTransactions } from '@/context/transactions-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -10,8 +9,7 @@ import { AlertCircle, CheckCircle, LoaderCircle, Info, Edit } from 'lucide-react
 import { Button } from '@/components/ui/button';
 
 const BudgetTracker = () => {
-  const { budget, setBudget, budgetFeedback, isFeedbackLoading, refreshBudgetFeedback } = useBudget();
-  const { transactions } = useTransactions();
+  const { transactions, budget, setBudget, budgetFeedback, isFeedbackLoading } = useTransactions();
 
   const totalExpenses = transactions
     .filter(t => t.type === 'expense' && new Date(t.date).getMonth() === new Date().getMonth())
@@ -21,10 +19,6 @@ const BudgetTracker = () => {
   const spendingPercentageOfBudget = budgetLimit > 0 ? (totalExpenses / budgetLimit) * 100 : 0;
   
   const remainingBudget = budgetLimit - totalExpenses;
-
-  useEffect(() => {
-    refreshBudgetFeedback(totalExpenses);
-  }, [totalExpenses, refreshBudgetFeedback]);
 
   const handleEditBudget = () => {
     setBudget({ monthlyIncome: 0, spendingTargetPercentage: 80 });

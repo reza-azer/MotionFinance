@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useBudget } from '@/context/budget-context';
+import { useTransactions } from '@/context/transactions-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 
@@ -25,7 +25,7 @@ const formSchema = z.object({
 });
 
 const BudgetSetup = () => {
-  const { setBudget } = useBudget();
+  const { setBudget } = useTransactions();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
