@@ -1,7 +1,7 @@
 'use server';
 
-import {createNextJSHandler} from '@genkit-ai/next';
-import {ai} from '@/ai/genkit';
+import { createNextJSHandler } from '@genkit-ai/next';
+import { ai } from '@/ai/genkit';
 import '@/ai/flows/analyze-spending';
 import '@/ai/flows/categorize-transaction';
 import '@/ai/flows/generate-budget-feedback';
