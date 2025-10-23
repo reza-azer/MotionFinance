@@ -28,14 +28,7 @@ interface TransactionsContextType {
 
 const TransactionsContext = createContext<TransactionsContextType | undefined>(undefined);
 
-const defaultTransactions: Transaction[] = [
-    { id: '1', date: '2024-07-20', description: 'Gaji Bulanan', amount: 8000000, type: 'income', category: 'Gaji' },
-    { id: '2', date: '2024-07-21', description: 'Belanja Bulanan', amount: 1250000, type: 'expense', category: 'Kebutuhan Pokok' },
-    { id: '3', date: '2024-07-21', description: 'Makan malam bersama teman', amount: 350000, type: 'expense', category: 'Restoran' },
-    { id: '4', date: '2024-07-22', description: 'Proyek lepas', amount: 1500000, type: 'income', category: 'Lainnya' },
-    { id: '5', date: '2024-07-23', description: 'Langganan Netflix', amount: 186000, type: 'expense', category: 'Hiburan' },
-    { id: '6', date: '2024-07-24', description: 'Bensin', amount: 200000, type: 'expense', category: 'Transportasi' },
-];
+const defaultTransactions: Transaction[] = [];
 
 export function TransactionsProvider({ children }: { children: ReactNode }) {
   const [transactions, setTransactions] = useLocalStorage<Transaction[]>('transactions', defaultTransactions);

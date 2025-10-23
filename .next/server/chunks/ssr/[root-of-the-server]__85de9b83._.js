@@ -114,56 +114,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$flows$2f$data$3
 ;
 ;
 const TransactionsContext = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["createContext"])(undefined);
-const defaultTransactions = [
-    {
-        id: '1',
-        date: '2024-07-20',
-        description: 'Gaji Bulanan',
-        amount: 8000000,
-        type: 'income',
-        category: 'Gaji'
-    },
-    {
-        id: '2',
-        date: '2024-07-21',
-        description: 'Belanja Bulanan',
-        amount: 1250000,
-        type: 'expense',
-        category: 'Kebutuhan Pokok'
-    },
-    {
-        id: '3',
-        date: '2024-07-21',
-        description: 'Makan malam bersama teman',
-        amount: 350000,
-        type: 'expense',
-        category: 'Restoran'
-    },
-    {
-        id: '4',
-        date: '2024-07-22',
-        description: 'Proyek lepas',
-        amount: 1500000,
-        type: 'income',
-        category: 'Lainnya'
-    },
-    {
-        id: '5',
-        date: '2024-07-23',
-        description: 'Langganan Netflix',
-        amount: 186000,
-        type: 'expense',
-        category: 'Hiburan'
-    },
-    {
-        id: '6',
-        date: '2024-07-24',
-        description: 'Bensin',
-        amount: 200000,
-        type: 'expense',
-        category: 'Transportasi'
-    }
-];
+const defaultTransactions = [];
 function TransactionsProvider({ children }) {
     const [transactions, setTransactions] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$local$2d$storage$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])('transactions', defaultTransactions);
     const [spendingTargetPercentage, setSpendingTargetPercentageState] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$local$2d$storage$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])('spendingTargetPercentage', 80);
@@ -290,7 +241,7 @@ function TransactionsProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/src/context/transactions-context.tsx",
-        lineNumber: 157,
+        lineNumber: 150,
         columnNumber: 5
     }, this);
 }
