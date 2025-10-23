@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { createContext, useContext, ReactNode, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useCallback } from 'react';
 import useLocalStorage from '@/hooks/use-local-storage';
 import type { Transaction } from '@/lib/types';
 import { toast } from "@/hooks/use-toast";
@@ -48,47 +48,22 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
   const [cashflowMessage, setCashflowMessage] = useState("");
   const [isInsightsLoading, setIsInsightsLoading] = useState(false);
 
-  const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
-    const newTransaction = { ...transaction, id: new Date().toISOString() };
-    setTransactions(prev => [newTransaction, ...prev]);
-    toast({
-      title: "Transaction Added",
-      description: `Added ${transaction.description} for $${transaction.amount}.`,
-    });
-  };
-
-  const deleteTransaction = (id: string) => {
-    setTransactions(prev => prev.filter(t => t.id !== id));
-    toast({
-        title: "Transaction Deleted",
-        variant: "destructive",
-    });
-  };
-
-  const handleSetBudget = (newBudget: Budget) => {
-    setBudget(newBudget);
-    toast({
-        title: 'Budget Saved!',
-        description: 'Your new income and spending target have been saved.',
-    });
-  };
-
-  const refreshInsights = useCallback(async () => {
-    if (transactions.length === 0) {
+  const refreshInsights = useCallback(async (currentTransactions: Transaction[]) => {
+    if (currentTransactions.length === 0) {
       setCashflowMessage("Add some transactions to get started.");
       setInsights([]);
       return;
     };
     setIsInsightsLoading(true);
     try {
-      const totalIncome = transactions
+      const totalIncome = currentTransactions
         .filter(t => t.type === 'income')
         .reduce((acc, t) => acc + t.amount, 0);
-      const totalExpenses = transactions
+      const totalExpenses = currentTransactions
         .filter(t => t.type === 'expense')
         .reduce((acc, t) => acc + t.amount, 0);
         
-      const recentTransactions = transactions.slice(0, 20);
+      const recentTransactions = currentTransactions.slice(0, 20);
 
       const result = await analyzeSpending({ 
         transactions: recentTransactions,
@@ -106,22 +81,22 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsInsightsLoading(false);
     }
-  }, [transactions]);
+  }, []);
 
 
-  const refreshBudgetFeedback = useCallback(async () => {
-    if (budget.monthlyIncome <= 0) {
+  const refreshBudgetFeedback = useCallback(async (currentTransactions: Transaction[], currentBudget: Budget) => {
+    if (currentBudget.monthlyIncome <= 0) {
         setBudgetFeedback("Set a monthly income to get budget feedback.");
         return
     };
     
     setIsFeedbackLoading(true);
     try {
-        const totalExpenses = transactions
+        const totalExpenses = currentTransactions
           .filter(t => t.type === 'expense' && new Date(t.date).getMonth() === new Date().getMonth())
           .reduce((acc, t) => acc + t.amount, 0);
 
-        const budgetLimit = budget.monthlyIncome * (budget.spendingTargetPercentage / 100);
+        const budgetLimit = currentBudget.monthlyIncome * (currentBudget.spendingTargetPercentage / 100);
         const spendingPercentageOfBudget = budgetLimit > 0 ? (totalExpenses / budgetLimit) * 100 : 0;
 
         let status: 'on_track' | 'approaching_limit' | 'at_limit';
@@ -141,13 +116,39 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
     } finally {
         setIsFeedbackLoading(false);
     }
-  }, [transactions, budget]);
-  
-  useEffect(() => {
-    refreshInsights();
-    refreshBudgetFeedback();
-  }, [refreshInsights, refreshBudgetFeedback]);
+  }, []);
 
+  const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
+    const newTransaction = { ...transaction, id: new Date().toISOString() };
+    const updatedTransactions = [newTransaction, ...transactions];
+    setTransactions(updatedTransactions);
+    refreshInsights(updatedTransactions);
+    refreshBudgetFeedback(updatedTransactions, budget);
+    toast({
+      title: "Transaction Added",
+      description: `Added ${transaction.description} for $${transaction.amount}.`,
+    });
+  };
+
+  const deleteTransaction = (id: string) => {
+    const updatedTransactions = transactions.filter(t => t.id !== id);
+    setTransactions(updatedTransactions);
+    refreshInsights(updatedTransactions);
+    refreshBudgetFeedback(updatedTransactions, budget);
+    toast({
+        title: "Transaction Deleted",
+        variant: "destructive",
+    });
+  };
+
+  const handleSetBudget = (newBudget: Budget) => {
+    setBudget(newBudget);
+    refreshBudgetFeedback(transactions, newBudget);
+    toast({
+        title: 'Budget Saved!',
+        description: 'Your new income and spending target have been saved.',
+    });
+  };
 
   return (
     <TransactionsContext.Provider value={{ 
