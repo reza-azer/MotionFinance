@@ -20,6 +20,13 @@ const chartConfig = {
 export default function ExpenseChart() {
   const { transactions } = useTransactions()
   const [activeIndex, setActiveIndex] = React.useState(0);
+
+  const totalAmount = React.useMemo(() => {
+    return transactions
+        .filter(t => t.type === 'expense')
+        .reduce((acc, curr) => acc + curr.amount, 0);
+  }, [transactions]);
+  
   const processedData = React.useMemo(() => {
     const categoryTotals = transactions.reduce((acc, transaction) => {
         if (transaction.type === 'expense') {
@@ -40,18 +47,15 @@ export default function ExpenseChart() {
                 category,
                 amount,
                 fill: `hsl(${hue}, 80%, 60%)`,
+                percentage: totalAmount > 0 ? (amount / totalAmount) * 100 : 0,
             }
         })
         .sort((a, b) => b.amount - a.amount);
-  }, [transactions]);
+  }, [transactions, totalAmount]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
   };
-
-  const totalAmount = React.useMemo(() => {
-    return processedData.reduce((acc, curr) => acc + curr.amount, 0)
-  }, [processedData])
   
   const onPieEnter = React.useCallback((_: any, index: number) => {
     setActiveIndex(index);
@@ -87,13 +91,23 @@ export default function ExpenseChart() {
             activeShape={(props) => {
                 const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload } = props;
                 if (!payload) return null;
+                const percentage = payload.percentage.toFixed(1);
                 return (
                   <g>
-                    <text x={cx} y={cy-10} dy={8} textAnchor="middle" fill={fill} className="text-xl font-numerical font-bold">
-                        {formatCurrency(Number(payload.amount))}
+                    <defs>
+                      <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                        <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                        <feMerge>
+                          <feMergeNode in="coloredBlur" />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    <text x={cx} y={cy - 10} textAnchor="middle" dominantBaseline="central" fill={fill} className="text-sm font-bold">
+                      {payload.category}
                     </text>
-                     <text x={cx} y={cy+10} dy={8} textAnchor="middle" fill="hsl(var(--muted-foreground))" className="text-sm">
-                        {payload.category}
+                     <text x={cx} y={cy + 10} textAnchor="middle" dominantBaseline="central" fill={fill} className="text-2xl font-numerical font-bold">
+                        {`${percentage}%`}
                     </text>
                     <Sector
                       cx={cx}
@@ -104,6 +118,7 @@ export default function ExpenseChart() {
                       endAngle={endAngle}
                       fill={fill}
                       stroke={fill}
+                      style={{ filter: 'url(#glow)' }}
                     />
                   </g>
                 );
