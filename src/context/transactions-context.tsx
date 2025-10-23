@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { createContext, useContext, ReactNode, useState, useCallback } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useCallback, useEffect } from 'react';
 import useLocalStorage from '@/hooks/use-local-storage';
 import type { Transaction } from '@/lib/types';
 import { toast } from "@/hooks/use-toast";
@@ -117,6 +117,13 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
         setIsFeedbackLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    refreshInsights(transactions);
+    refreshBudgetFeedback(transactions, budget);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run only once on initial mount
+
 
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     const newTransaction = { ...transaction, id: new Date().toISOString() };

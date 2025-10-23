@@ -3,22 +3,20 @@
 import { useState, useEffect, useCallback } from 'react';
 
 function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void] {
-  const [storedValue, setStoredValue] = useState<T>(initialValue);
-
-  useEffect(() => {
-    // This effect runs once on mount on the client side
+  // Use a function with useState to ensure initialValue is only read once.
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    // This part runs only on the client, avoiding server-side execution.
+    if (typeof window === 'undefined') {
+      return initialValue;
+    }
     try {
       const item = window.localStorage.getItem(key);
-      if (item) {
-        setStoredValue(JSON.parse(item));
-      } else {
-         window.localStorage.setItem(key, JSON.stringify(initialValue));
-      }
+      return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.error(error);
-      setStoredValue(initialValue);
+      return initialValue;
     }
-  }, [key, initialValue]);
+  });
 
   const setValue = useCallback((value: T | ((val: T) => T)) => {
     try {
@@ -31,6 +29,24 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val
       console.error(error);
     }
   }, [key, storedValue]);
+
+  // This effect syncs the state if localStorage changes in another tab.
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === key && e.newValue) {
+        try {
+          setStoredValue(JSON.parse(e.newValue));
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [key]);
 
   return [storedValue, setValue];
 }
