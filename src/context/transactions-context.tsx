@@ -41,11 +41,9 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
   const [transactions, setTransactions] = useLocalStorage<Transaction[]>('transactions', defaultTransactions);
   const [budget, setBudget] = useLocalStorage<Budget>('budget', { monthlyIncome: 0, spendingTargetPercentage: 80 });
   
-  // State from BudgetContext
   const [budgetFeedback, setBudgetFeedback] = useState('');
   const [isFeedbackLoading, setIsFeedbackLoading] = useState(false);
 
-  // State from FinancialHealthContext
   const [insights, setInsights] = useState<string[]>([]);
   const [cashflowMessage, setCashflowMessage] = useState("");
   const [isInsightsLoading, setIsInsightsLoading] = useState(false);
@@ -76,7 +74,11 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
   };
 
   const refreshInsights = useCallback(async () => {
-    if (transactions.length === 0) return;
+    if (transactions.length === 0) {
+      setCashflowMessage("Add some transactions to get started.");
+      setInsights([]);
+      return;
+    };
     setIsInsightsLoading(true);
     try {
       const totalIncome = transactions
@@ -108,7 +110,10 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
 
 
   const refreshBudgetFeedback = useCallback(async () => {
-    if (budget.monthlyIncome <= 0) return;
+    if (budget.monthlyIncome <= 0) {
+        setBudgetFeedback("Set a monthly income to get budget feedback.");
+        return
+    };
     
     setIsFeedbackLoading(true);
     try {
@@ -136,12 +141,12 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
     } finally {
         setIsFeedbackLoading(false);
     }
-  }, [transactions, budget.monthlyIncome, budget.spendingTargetPercentage]);
+  }, [transactions, budget]);
   
   useEffect(() => {
     refreshInsights();
     refreshBudgetFeedback();
-  }, [transactions, budget, refreshInsights, refreshBudgetFeedback]);
+  }, [refreshInsights, refreshBudgetFeedback]);
 
 
   return (
