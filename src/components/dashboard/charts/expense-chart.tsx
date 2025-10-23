@@ -8,10 +8,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import type { Transaction } from "@/lib/types"
-
-interface ExpenseChartProps {
-    data: Transaction[];
-}
+import { useTransactions } from '@/context/transactions-context'
 
 const chartConfig = {
   amount: {
@@ -20,10 +17,11 @@ const chartConfig = {
 } satisfies React.ComponentProps<typeof ChartContainer>["config"]
 
 
-export default function ExpenseChart({ data }: ExpenseChartProps) {
+export default function ExpenseChart() {
+  const { transactions } = useTransactions()
   const [activeIndex, setActiveIndex] = React.useState(0);
   const processedData = React.useMemo(() => {
-    const categoryTotals = data.reduce((acc, transaction) => {
+    const categoryTotals = transactions.reduce((acc, transaction) => {
         if (transaction.type === 'expense') {
             acc[transaction.category] = (acc[transaction.category] || 0) + transaction.amount;
         }
@@ -37,7 +35,7 @@ export default function ExpenseChart({ data }: ExpenseChartProps) {
             fill: `var(--chart-${(index % 5) + 1})`,
         }))
         .sort((a, b) => b.amount - a.amount);
-  }, [data]);
+  }, [transactions]);
 
 
   const totalAmount = React.useMemo(() => {
