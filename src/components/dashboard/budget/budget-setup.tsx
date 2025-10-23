@@ -14,62 +14,48 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { useTransactions } from '@/context/transactions-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 
 const formSchema = z.object({
-  monthlyIncome: z.coerce.number().positive({ message: 'Penghasilan bulanan harus positif.' }).max(10000000000, { message: 'Pendapatan bulanan tidak boleh melebihi Rp 10.000.000.000.' }),
   spendingTargetPercentage: z.coerce.number().min(1).max(100),
 });
 
 const BudgetSetup = () => {
-  const { setBudget } = useTransactions();
+  const { setSpendingTargetPercentage, spendingTargetPercentage } = useTransactions();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      monthlyIncome: 0,
-      spendingTargetPercentage: 80,
+      spendingTargetPercentage: spendingTargetPercentage,
     },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    setBudget(values);
+    setSpendingTargetPercentage(values.spendingTargetPercentage);
   };
   
-  const spendingTarget = form.watch('spendingTargetPercentage');
+  const currentSpendingTarget = form.watch('spendingTargetPercentage');
 
   return (
     <Card className="bg-card/50 backdrop-blur-sm border-white/10">
         <CardHeader>
-            <CardTitle className='font-headline'>Atur Anggaran Bulanan Anda</CardTitle>
-            <CardDescription>Beri tahu kami pendapatan dan target pengeluaran Anda untuk memulai.</CardDescription>
+            <CardTitle className='font-headline'>Atur Target Pengeluaran</CardTitle>
+            <CardDescription>
+                Tentukan berapa persen dari pemasukan bulanan yang ingin Anda alokasikan untuk pengeluaran.
+                Pemasukan bulanan akan dihitung otomatis dari transaksi Anda.
+            </CardDescription>
         </CardHeader>
         <CardContent>
             <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                 control={form.control}
-                name="monthlyIncome"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Penghasilan Bulanan</FormLabel>
-                    <FormControl>
-                        <Input type="number" step="100000" placeholder="cth., 5000000" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-
-                <FormField
-                control={form.control}
                 name="spendingTargetPercentage"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Target Pengeluaran: {spendingTarget}% dari pendapatan</FormLabel>
+                    <FormLabel>Target Pengeluaran: {currentSpendingTarget}% dari pemasukan</FormLabel>
                     <FormControl>
                         <Slider
                             min={0}
@@ -84,7 +70,7 @@ const BudgetSetup = () => {
                 )}
                 />
 
-                <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Simpan Anggaran</Button>
+                <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Simpan Target</Button>
             </form>
             </Form>
         </CardContent>

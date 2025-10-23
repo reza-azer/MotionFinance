@@ -14,13 +14,13 @@ import BudgetSetup from './budget/budget-setup';
 import ExpenseTrendChart from './charts/expense-trend-chart';
 
 const Dashboard = () => {
-  const { transactions, budget } = useTransactions();
+  const { transactions, monthlyIncome } = useTransactions();
   const expenseTransactions = transactions.filter(t => t.type === 'expense');
 
   return (
     <section id="dashboard" className="space-y-8">
       <SummaryCards />
-      {budget.monthlyIncome > 0 ? <BudgetTracker /> : <BudgetSetup />}
+      {monthlyIncome > 0 ? <BudgetTracker /> : <BudgetSetup />}
        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className='lg:col-span-3'>
           <Card className="bg-card/50 backdrop-blur-sm border-white/10">

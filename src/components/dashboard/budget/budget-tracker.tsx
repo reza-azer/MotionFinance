@@ -7,25 +7,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Progress } from '@/components/ui/progress';
 import { AlertCircle, CheckCircle, LoaderCircle, Info, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import BudgetSetup from './budget-setup';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 const BudgetTracker = () => {
-  const { transactions, budget, setBudget, budgetFeedback, isFeedbackLoading } = useTransactions();
+  const { transactions, monthlyIncome, spendingTargetPercentage, budgetFeedback, isFeedbackLoading } = useTransactions();
 
   const totalExpenses = transactions
     .filter(t => t.type === 'expense' && new Date(t.date).getMonth() === new Date().getMonth())
     .reduce((acc, t) => acc + t.amount, 0);
 
-  const budgetLimit = budget.monthlyIncome * (budget.spendingTargetPercentage / 100);
+  const budgetLimit = monthlyIncome * (spendingTargetPercentage / 100);
   const spendingPercentageOfBudget = budgetLimit > 0 ? (totalExpenses / budgetLimit) * 100 : 0;
   
   const remainingBudget = budgetLimit - totalExpenses;
   
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
-  };
-
-  const handleEditBudget = () => {
-    setBudget({ monthlyIncome: 0, spendingTargetPercentage: 80 });
   };
   
   const getIcon = () => {
@@ -45,10 +43,20 @@ const BudgetTracker = () => {
             <CardTitle className="font-headline">Anggaran Bulanan</CardTitle>
             <CardDescription>Pengeluaran vs. target Anda.</CardDescription>
         </div>
-        <Button variant="ghost" size="icon" onClick={handleEditBudget}>
-            <Edit className="h-4 w-4" />
-            <span className='sr-only'>Ubah Anggaran</span>
-        </Button>
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="ghost" size="icon">
+                    <Edit className="h-4 w-4" />
+                    <span className='sr-only'>Ubah Anggaran</span>
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Ubah Target Pengeluaran</DialogTitle>
+                </DialogHeader>
+                <BudgetSetup />
+            </DialogContent>
+        </Dialog>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
@@ -59,7 +67,7 @@ const BudgetTracker = () => {
           <Progress value={spendingPercentageOfBudget} className="h-3" />
           <div className="flex justify-between items-center mt-1 text-xs text-muted-foreground">
              <span>{remainingBudget >= 0 ? `${formatCurrency(remainingBudget)} tersisa` : `${formatCurrency(Math.abs(remainingBudget))} lebih`}</span>
-             <span>{budget.spendingTargetPercentage}% dari {formatCurrency(budget.monthlyIncome)}</span>
+             <span>{spendingTargetPercentage}% dari {formatCurrency(monthlyIncome)}</span>
           </div>
         </div>
         <div className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg">

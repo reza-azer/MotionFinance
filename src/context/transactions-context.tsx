@@ -9,7 +9,6 @@ import { analyzeSpending } from '@/ai/flows/analyze-spending';
 import { generateBudgetFeedback } from '@/ai/flows/generate-budget-feedback';
 
 interface Budget {
-    monthlyIncome: number;
     spendingTargetPercentage: number;
 }
 
@@ -17,8 +16,9 @@ interface TransactionsContextType {
   transactions: Transaction[];
   addTransaction: (transaction: Omit<Transaction, 'id'>) => void;
   deleteTransaction: (id: string) => void;
-  budget: Budget;
-  setBudget: (budget: Budget) => void;
+  spendingTargetPercentage: number;
+  setSpendingTargetPercentage: (percentage: number) => void;
+  monthlyIncome: number;
   budgetFeedback: string;
   isFeedbackLoading: boolean;
   insights: string[];
@@ -39,7 +39,7 @@ const defaultTransactions: Transaction[] = [
 
 export function TransactionsProvider({ children }: { children: ReactNode }) {
   const [transactions, setTransactions] = useLocalStorage<Transaction[]>('transactions', defaultTransactions);
-  const [budget, setBudget] = useLocalStorage<Budget>('budget', { monthlyIncome: 0, spendingTargetPercentage: 80 });
+  const [spendingTargetPercentage, setSpendingTargetPercentageState] = useLocalStorage<number>('spendingTargetPercentage', 80);
   
   const [budgetFeedback, setBudgetFeedback] = useState('');
   const [isFeedbackLoading, setIsFeedbackLoading] = useState(false);
@@ -47,6 +47,10 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
   const [insights, setInsights] = useState<string[]>([]);
   const [cashflowMessage, setCashflowMessage] = useState("");
   const [isInsightsLoading, setIsInsightsLoading] = useState(false);
+
+  const monthlyIncome = transactions
+    .filter(t => t.type === 'income' && new Date(t.date).getMonth() === new Date().getMonth())
+    .reduce((acc, t) => acc + t.amount, 0);
 
   const refreshInsights = useCallback(async (currentTransactions: Transaction[]) => {
     if (currentTransactions.length === 0) {
@@ -83,10 +87,9 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-
-  const refreshBudgetFeedback = useCallback(async (currentTransactions: Transaction[], currentBudget: Budget) => {
-    if (currentBudget.monthlyIncome <= 0) {
-        setBudgetFeedback("Atur pendapatan bulanan untuk mendapatkan umpan balik anggaran.");
+  const refreshBudgetFeedback = useCallback(async (currentTransactions: Transaction[], currentMonthlyIncome: number, currentSpendingTarget: number) => {
+    if (currentMonthlyIncome <= 0) {
+        setBudgetFeedback("Tambahkan transaksi pemasukan untuk memulai pelacakan anggaran.");
         return
     };
     
@@ -96,7 +99,7 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
           .filter(t => t.type === 'expense' && new Date(t.date).getMonth() === new Date().getMonth())
           .reduce((acc, t) => acc + t.amount, 0);
 
-        const budgetLimit = currentBudget.monthlyIncome * (currentBudget.spendingTargetPercentage / 100);
+        const budgetLimit = currentMonthlyIncome * (currentSpendingTarget / 100);
         const spendingPercentageOfBudget = budgetLimit > 0 ? (totalExpenses / budgetLimit) * 100 : 0;
 
         let status: 'on_track' | 'approaching_limit' | 'at_limit';
@@ -117,36 +120,36 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
         setIsFeedbackLoading(false);
     }
   }, []);
-
+  
   useEffect(() => {
     refreshInsights(transactions);
-    refreshBudgetFeedback(transactions, budget);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transactions, budget]);
-
+    refreshBudgetFeedback(transactions, monthlyIncome, spendingTargetPercentage);
+  }, [transactions, monthlyIncome, spendingTargetPercentage, refreshInsights, refreshBudgetFeedback]);
 
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     const newTransaction = { ...transaction, id: new Date().toISOString() };
-    setTransactions(prev => [newTransaction, ...prev]);
+    const updatedTransactions = [newTransaction, ...transactions];
+    setTransactions(updatedTransactions);
     toast({
       title: "Transaksi Ditambahkan",
-      description: `Menambahkan ${transaction.description} sebesar Rp${transaction.amount}.`,
+      description: `Menambahkan ${transaction.description} sebesar ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(transaction.amount)}.`,
     });
   };
 
   const deleteTransaction = (id: string) => {
-    setTransactions(prev => prev.filter(t => t.id !== id));
+    const updatedTransactions = transactions.filter(t => t.id !== id);
+    setTransactions(updatedTransactions);
     toast({
         title: "Transaksi Dihapus",
         variant: "destructive",
     });
   };
 
-  const handleSetBudget = (newBudget: Budget) => {
-    setBudget(newBudget);
+  const setSpendingTargetPercentage = (percentage: number) => {
+    setSpendingTargetPercentageState(percentage);
     toast({
-        title: 'Anggaran Disimpan!',
-        description: 'Pendapatan dan target pengeluaran baru Anda telah disimpan.',
+        title: 'Target Anggaran Disimpan!',
+        description: `Target pengeluaran baru Anda adalah ${percentage}% dari pendapatan.`,
     });
   };
 
@@ -155,13 +158,14 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
         transactions, 
         addTransaction, 
         deleteTransaction,
-        budget,
-        setBudget: handleSetBudget,
+        spendingTargetPercentage,
+        setSpendingTargetPercentage,
+        monthlyIncome,
         budgetFeedback,
         isFeedbackLoading,
         insights,
         cashflowMessage,
-        isInsightsLoading: isInsightsLoading
+        isInsightsLoading
     }}>
       {children}
     </TransactionsContext.Provider>
