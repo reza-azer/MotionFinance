@@ -2,6 +2,7 @@ import { TransactionsProvider } from '@/context/transactions-context';
 import Header from '@/components/layout/header';
 import Dashboard from '@/components/dashboard/dashboard';
 import TransactionsView from '@/components/transactions/transactions-view';
+import Footer from '@/components/layout/footer';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
             <TransactionsView />
           </div>
         </main>
+        <Footer />
       </div>
     </TransactionsProvider>
   );
