@@ -68,6 +68,7 @@ export default function ExpenseChart() {
             activeIndex={activeIndex}
             activeShape={(props) => {
                 const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload } = props;
+                if (!payload) return null;
                 return (
                   <g>
                     <text x={cx} y={cy-10} dy={8} textAnchor="middle" fill={fill} className="text-xl font-numerical font-bold">
