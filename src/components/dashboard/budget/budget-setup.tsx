@@ -20,7 +20,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Slider } from '@/components/ui/slider';
 
 const formSchema = z.object({
-  monthlyIncome: z.coerce.number().positive({ message: 'Monthly income must be positive.' }),
+  monthlyIncome: z.coerce.number().positive({ message: 'Monthly income must be positive.' }).max(1000000, { message: 'Monthly income cannot exceed $1,000,000.' }),
   spendingTargetPercentage: z.coerce.number().min(1).max(100),
 });
 
