@@ -27,13 +27,21 @@ export default function ExpenseChart() {
         }
         return acc;
     }, {} as Record<string, number>);
+    
+    const sortedCategories = Object.entries(categoryTotals)
+      .sort(([, a], [, b]) => b - a)
+      .map(([category]) => category);
 
     return Object.entries(categoryTotals)
-        .map(([category, amount], index) => ({
-            category,
-            amount,
-            fill: `var(--chart-${(index % 5) + 1})`,
-        }))
+        .map(([category, amount]) => {
+            const index = sortedCategories.indexOf(category);
+            const hue = (index * 45) % 360;
+            return {
+                category,
+                amount,
+                fill: `hsl(${hue}, 80%, 60%)`,
+            }
+        })
         .sort((a, b) => b.amount - a.amount);
   }, [transactions]);
 
