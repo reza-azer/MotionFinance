@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useCallback } from 'react';
 import useLocalStorage from '@/hooks/use-local-storage';
 import { generateBudgetFeedback } from '@/ai/flows/generate-budget-feedback';
 import { toast } from '@/hooks/use-toast';
@@ -34,7 +34,7 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
     })
   }
 
-  const refreshBudgetFeedback = async (currentSpending: number) => {
+  const refreshBudgetFeedback = useCallback(async (currentSpending: number) => {
     if (budget.monthlyIncome <= 0) return;
     
     setIsFeedbackLoading(true);
@@ -59,7 +59,7 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
     } finally {
         setIsFeedbackLoading(false);
     }
-  };
+  }, [budget.monthlyIncome, budget.spendingTargetPercentage]);
 
   return (
     <BudgetContext.Provider value={{ budget, setBudget: handleSetBudget, budgetFeedback, isFeedbackLoading, refreshBudgetFeedback }}>
