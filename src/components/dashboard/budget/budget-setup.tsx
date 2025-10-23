@@ -20,7 +20,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Slider } from '@/components/ui/slider';
 
 const formSchema = z.object({
-  monthlyIncome: z.coerce.number().positive({ message: 'Monthly income must be positive.' }).max(1000000, { message: 'Monthly income cannot exceed $1,000,000.' }),
+  monthlyIncome: z.coerce.number().positive({ message: 'Penghasilan bulanan harus positif.' }).max(10000000000, { message: 'Pendapatan bulanan tidak boleh melebihi Rp 10.000.000.000.' }),
   spendingTargetPercentage: z.coerce.number().min(1).max(100),
 });
 
@@ -44,8 +44,8 @@ const BudgetSetup = () => {
   return (
     <Card className="bg-card/50 backdrop-blur-sm border-white/10">
         <CardHeader>
-            <CardTitle className='font-headline'>Set Your Monthly Budget</CardTitle>
-            <CardDescription>Tell us your income and spending goals to get started.</CardDescription>
+            <CardTitle className='font-headline'>Atur Anggaran Bulanan Anda</CardTitle>
+            <CardDescription>Beri tahu kami pendapatan dan target pengeluaran Anda untuk memulai.</CardDescription>
         </CardHeader>
         <CardContent>
             <Form {...form}>
@@ -55,9 +55,9 @@ const BudgetSetup = () => {
                 name="monthlyIncome"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Monthly Income</FormLabel>
+                    <FormLabel>Penghasilan Bulanan</FormLabel>
                     <FormControl>
-                        <Input type="number" step="100" placeholder="e.g., 3000" {...field} />
+                        <Input type="number" step="100000" placeholder="cth., 5000000" {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
@@ -69,7 +69,7 @@ const BudgetSetup = () => {
                 name="spendingTargetPercentage"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Spending Target: {spendingTarget}% of income</FormLabel>
+                    <FormLabel>Target Pengeluaran: {spendingTarget}% dari pendapatan</FormLabel>
                     <FormControl>
                         <Slider
                             min={0}
@@ -84,7 +84,7 @@ const BudgetSetup = () => {
                 )}
                 />
 
-                <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Save Budget</Button>
+                <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Simpan Anggaran</Button>
             </form>
             </Form>
         </CardContent>

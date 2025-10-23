@@ -19,6 +19,10 @@ const BudgetTracker = () => {
   const spendingPercentageOfBudget = budgetLimit > 0 ? (totalExpenses / budgetLimit) * 100 : 0;
   
   const remainingBudget = budgetLimit - totalExpenses;
+  
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
+  };
 
   const handleEditBudget = () => {
     setBudget({ monthlyIncome: 0, spendingTargetPercentage: 80 });
@@ -38,24 +42,24 @@ const BudgetTracker = () => {
     <Card className="bg-card/50 backdrop-blur-sm border-white/10">
       <CardHeader className='flex-row items-center justify-between'>
         <div>
-            <CardTitle className="font-headline">Monthly Budget</CardTitle>
-            <CardDescription>Your spending vs. your goal.</CardDescription>
+            <CardTitle className="font-headline">Anggaran Bulanan</CardTitle>
+            <CardDescription>Pengeluaran vs. target Anda.</CardDescription>
         </div>
         <Button variant="ghost" size="icon" onClick={handleEditBudget}>
             <Edit className="h-4 w-4" />
-            <span className='sr-only'>Edit Budget</span>
+            <span className='sr-only'>Ubah Anggaran</span>
         </Button>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
           <div className="flex justify-between items-center mb-1 text-sm font-numerical">
-            <span className="font-medium">${totalExpenses.toFixed(2)} spent</span>
-            <span className="text-muted-foreground">/ ${budgetLimit.toFixed(2)}</span>
+            <span className="font-medium">{formatCurrency(totalExpenses)} terpakai</span>
+            <span className="text-muted-foreground">/ {formatCurrency(budgetLimit)}</span>
           </div>
           <Progress value={spendingPercentageOfBudget} className="h-3" />
           <div className="flex justify-between items-center mt-1 text-xs text-muted-foreground">
-             <span>{remainingBudget >= 0 ? `$${remainingBudget.toFixed(2)} left` : `$${Math.abs(remainingBudget).toFixed(2)} over`}</span>
-             <span>{budget.spendingTargetPercentage}% of ${budget.monthlyIncome}</span>
+             <span>{remainingBudget >= 0 ? `${formatCurrency(remainingBudget)} tersisa` : `${formatCurrency(Math.abs(remainingBudget))} lebih`}</span>
+             <span>{budget.spendingTargetPercentage}% dari {formatCurrency(budget.monthlyIncome)}</span>
           </div>
         </div>
         <div className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg">
@@ -64,7 +68,7 @@ const BudgetTracker = () => {
                 (getIcon())
             }
             <p className="text-sm text-muted-foreground">
-                {isFeedbackLoading ? 'Analyzing your spending...' : budgetFeedback}
+                {isFeedbackLoading ? 'Menganalisis pengeluaran Anda...' : budgetFeedback}
             </p>
         </div>
       </CardContent>

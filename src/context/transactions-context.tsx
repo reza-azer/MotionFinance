@@ -29,12 +29,12 @@ interface TransactionsContextType {
 const TransactionsContext = createContext<TransactionsContextType | undefined>(undefined);
 
 const defaultTransactions: Transaction[] = [
-    { id: '1', date: '2024-07-20', description: 'Monthly Salary', amount: 5000, type: 'income', category: 'Salary' },
-    { id: '2', date: '2024-07-21', description: 'Grocery Shopping', amount: 150.75, type: 'expense', category: 'Groceries' },
-    { id: '3', date: '2024-07-21', description: 'Dinner with friends', amount: 80, type: 'expense', category: 'Restaurants' },
-    { id: '4', date: '2024-07-22', description: 'Freelance Project', amount: 750, type: 'income', category: 'Freelance' },
-    { id: '5', date: '2024-07-23', description: 'Netflix Subscription', amount: 15.99, type: 'expense', category: 'Entertainment' },
-    { id: '6', date: '2024-07-24', description: 'Gasoline', amount: 50, type: 'expense', category: 'Transportation' },
+    { id: '1', date: '2024-07-20', description: 'Gaji Bulanan', amount: 8000000, type: 'income', category: 'Gaji' },
+    { id: '2', date: '2024-07-21', description: 'Belanja Bulanan', amount: 1250000, type: 'expense', category: 'Kebutuhan Pokok' },
+    { id: '3', date: '2024-07-21', description: 'Makan malam bersama teman', amount: 350000, type: 'expense', category: 'Restoran' },
+    { id: '4', date: '2024-07-22', description: 'Proyek lepas', amount: 1500000, type: 'income', category: 'Lainnya' },
+    { id: '5', date: '2024-07-23', description: 'Langganan Netflix', amount: 186000, type: 'expense', category: 'Hiburan' },
+    { id: '6', date: '2024-07-24', description: 'Bensin', amount: 200000, type: 'expense', category: 'Transportasi' },
 ];
 
 export function TransactionsProvider({ children }: { children: ReactNode }) {
@@ -50,7 +50,7 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
 
   const refreshInsights = useCallback(async (currentTransactions: Transaction[]) => {
     if (currentTransactions.length === 0) {
-      setCashflowMessage("Add some transactions to get started.");
+      setCashflowMessage("Tambahkan beberapa transaksi untuk memulai.");
       setInsights([]);
       return;
     };
@@ -76,7 +76,7 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
 
     } catch (error) {
       console.error("Failed to analyze spending:", error);
-      setCashflowMessage("Could not load financial insights right now.");
+      setCashflowMessage("Tidak dapat memuat wawasan keuangan saat ini.");
       setInsights([]);
     } finally {
       setIsInsightsLoading(false);
@@ -86,7 +86,7 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
 
   const refreshBudgetFeedback = useCallback(async (currentTransactions: Transaction[], currentBudget: Budget) => {
     if (currentBudget.monthlyIncome <= 0) {
-        setBudgetFeedback("Set a monthly income to get budget feedback.");
+        setBudgetFeedback("Atur pendapatan bulanan untuk mendapatkan umpan balik anggaran.");
         return
     };
     
@@ -112,7 +112,7 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
         setBudgetFeedback(result.feedback);
     } catch (error) {
         console.error("Failed to generate budget feedback:", error);
-        setBudgetFeedback("Could not load feedback right now.");
+        setBudgetFeedback("Tidak dapat memuat umpan balik saat ini.");
     } finally {
         setIsFeedbackLoading(false);
     }
@@ -122,38 +122,31 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
     refreshInsights(transactions);
     refreshBudgetFeedback(transactions, budget);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Run only once on initial mount
+  }, [transactions, budget]);
 
 
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     const newTransaction = { ...transaction, id: new Date().toISOString() };
-    const updatedTransactions = [newTransaction, ...transactions];
-    setTransactions(updatedTransactions);
-    refreshInsights(updatedTransactions);
-    refreshBudgetFeedback(updatedTransactions, budget);
+    setTransactions(prev => [newTransaction, ...prev]);
     toast({
-      title: "Transaction Added",
-      description: `Added ${transaction.description} for $${transaction.amount}.`,
+      title: "Transaksi Ditambahkan",
+      description: `Menambahkan ${transaction.description} sebesar Rp${transaction.amount}.`,
     });
   };
 
   const deleteTransaction = (id: string) => {
-    const updatedTransactions = transactions.filter(t => t.id !== id);
-    setTransactions(updatedTransactions);
-    refreshInsights(updatedTransactions);
-    refreshBudgetFeedback(updatedTransactions, budget);
+    setTransactions(prev => prev.filter(t => t.id !== id));
     toast({
-        title: "Transaction Deleted",
+        title: "Transaksi Dihapus",
         variant: "destructive",
     });
   };
 
   const handleSetBudget = (newBudget: Budget) => {
     setBudget(newBudget);
-    refreshBudgetFeedback(transactions, newBudget);
     toast({
-        title: 'Budget Saved!',
-        description: 'Your new income and spending target have been saved.',
+        title: 'Anggaran Disimpan!',
+        description: 'Pendapatan dan target pengeluaran baru Anda telah disimpan.',
     });
   };
 

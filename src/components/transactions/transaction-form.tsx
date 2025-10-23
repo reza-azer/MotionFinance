@@ -18,24 +18,26 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useTransactions } from '@/context/transactions-context';
 import { categorizeTransaction } from '@/ai/flows/categorize-transaction';
 import { Sparkles, LoaderCircle } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
 
 const formSchema = z.object({
-  description: z.string().min(2, { message: 'Description must be at least 2 characters.' }),
-  amount: z.coerce.number().positive({ message: 'Amount must be positive.' }),
+  description: z.string().min(2, { message: 'Deskripsi minimal harus 2 karakter.' }),
+  amount: z.coerce.number().positive({ message: 'Jumlah harus positif.' }),
   type: z.enum(['income', 'expense']),
-  date: z.date({ required_error: 'A date is required.' }),
-  category: z.string().min(1, { message: 'Category is required.' }),
+  date: z.date({ required_error: 'Tanggal harus diisi.' }),
+  category: z.string().min(1, { message: 'Kategori harus diisi.' }),
 });
 
 const TransactionForm = () => {
   const { addTransaction } = useTransactions();
   const [isCategorizing, setIsCategorizing] = useState(false);
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,7 +55,7 @@ const TransactionForm = () => {
     if (!description) {
       toast({
         title: 'Error',
-        description: 'Please enter a description to categorize.',
+        description: 'Silakan masukkan deskripsi untuk dikategorikan.',
         variant: 'destructive',
       });
       return;
@@ -63,14 +65,14 @@ const TransactionForm = () => {
       const result = await categorizeTransaction({ description });
       form.setValue('category', result.category, { shouldValidate: true });
       toast({
-        title: 'Categorization Complete',
-        description: `Category set to "${result.category}".`,
+        title: 'Kategorisasi Selesai',
+        description: `Kategori diatur ke "${result.category}".`,
       });
     } catch (error) {
       console.error('Categorization failed', error);
       toast({
-        title: 'Categorization Failed',
-        description: 'Could not automatically categorize the transaction.',
+        title: 'Kategorisasi Gagal',
+        description: 'Tidak dapat mengkategorikan transaksi secara otomatis.',
         variant: 'destructive',
       });
     } finally {
@@ -92,9 +94,9 @@ const TransactionForm = () => {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Deskripsi</FormLabel>
               <FormControl>
-                <Input placeholder="e.g., Coffee with Jane" {...field} />
+                <Input placeholder="cth., Kopi dengan Jane" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -107,9 +109,9 @@ const TransactionForm = () => {
             name="amount"
             render={({ field }) => (
                 <FormItem>
-                <FormLabel>Amount</FormLabel>
+                <FormLabel>Jumlah</FormLabel>
                 <FormControl>
-                    <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                    <Input type="number" step="1000" placeholder="0" {...field} />
                 </FormControl>
                 <FormMessage />
                 </FormItem>
@@ -120,7 +122,7 @@ const TransactionForm = () => {
                 name="date"
                 render={({ field }) => (
                     <FormItem className="flex flex-col pt-2">
-                        <FormLabel className='mb-2'>Date</FormLabel>
+                        <FormLabel className='mb-2'>Tanggal</FormLabel>
                         <Popover>
                             <PopoverTrigger asChild>
                                 <FormControl>
@@ -132,9 +134,9 @@ const TransactionForm = () => {
                                     )}
                                 >
                                     {field.value ? (
-                                    format(field.value, "PPP")
+                                    format(field.value, "PPP", { locale: id })
                                     ) : (
-                                    <span>Pick a date</span>
+                                    <span>Pilih tanggal</span>
                                     )}
                                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                 </Button>
@@ -143,6 +145,7 @@ const TransactionForm = () => {
                             <PopoverContent className="w-auto p-0" align="start">
                                 <Calendar
                                 mode="single"
+                                locale={id}
                                 selected={field.value}
                                 onSelect={field.onChange}
                                 disabled={(date) =>
@@ -163,7 +166,7 @@ const TransactionForm = () => {
           name="type"
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel>Type</FormLabel>
+              <FormLabel>Tipe</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
@@ -174,13 +177,13 @@ const TransactionForm = () => {
                     <FormControl>
                       <RadioGroupItem value="expense" />
                     </FormControl>
-                    <FormLabel className="font-normal">Expense</FormLabel>
+                    <FormLabel className="font-normal">Pengeluaran</FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2 space-y-0">
                     <FormControl>
                       <RadioGroupItem value="income" />
                     </FormControl>
-                    <FormLabel className="font-normal">Income</FormLabel>
+                    <FormLabel className="font-normal">Pemasukan</FormLabel>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
@@ -194,10 +197,10 @@ const TransactionForm = () => {
             name="category"
             render={({ field }) => (
                 <FormItem>
-                <FormLabel>Category</FormLabel>
+                <FormLabel>Kategori</FormLabel>
                     <div className="flex gap-2">
                         <FormControl>
-                            <Input placeholder="e.g., Food, Salary" {...field} />
+                            <Input placeholder="cth., Makanan, Gaji" {...field} />
                         </FormControl>
                         <Button type="button" size="icon" variant="outline" onClick={handleCategorize} disabled={isCategorizing}>
                             {isCategorizing ? (
@@ -205,7 +208,7 @@ const TransactionForm = () => {
                             ) : (
                                 <Sparkles className="text-accent" />
                             )}
-                            <span className="sr-only">Categorize with AI</span>
+                            <span className="sr-only">Kategorikan dengan AI</span>
                         </Button>
                     </div>
                 <FormMessage />
@@ -213,7 +216,7 @@ const TransactionForm = () => {
             )}
         />
 
-        <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Add Transaction</Button>
+        <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Tambah Transaksi</Button>
       </form>
     </Form>
   );

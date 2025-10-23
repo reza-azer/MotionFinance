@@ -25,19 +25,19 @@ const Dashboard = () => {
         <div className='lg:col-span-3'>
           <Card className="bg-card/50 backdrop-blur-sm border-white/10">
             <CardHeader>
-              <CardTitle className="font-headline">Analytics</CardTitle>
+              <CardTitle className="font-headline">Analitik</CardTitle>
             </CardHeader>
             <CardContent>
               {transactions.length > 0 ? (
                 <Tabs defaultValue="breakdown">
                     <TabsList>
-                        <TabsTrigger value="breakdown">Expense Breakdown</TabsTrigger>
-                        <TabsTrigger value="trends">Income vs. Expense</TabsTrigger>
-                        <TabsTrigger value="daily">Daily Spending</TabsTrigger>
+                        <TabsTrigger value="breakdown">Rincian Pengeluaran</TabsTrigger>
+                        <TabsTrigger value="trends">Pemasukan vs. Pengeluaran</TabsTrigger>
+                        <TabsTrigger value="daily">Pengeluaran Harian</TabsTrigger>
                     </TabsList>
                     <TabsContent value="breakdown">
                         <div className="h-[350px]">
-                          {expenseTransactions.length > 0 ? <ExpenseChart /> : <div className="flex items-center justify-center h-full text-muted-foreground"><p>No expense data for pie chart.</p></div>}
+                          {expenseTransactions.length > 0 ? <ExpenseChart /> : <div className="flex items-center justify-center h-full text-muted-foreground"><p>Tidak ada data pengeluaran untuk diagram pai.</p></div>}
                         </div>
                     </TabsContent>
                     <TabsContent value="trends">
@@ -53,7 +53,7 @@ const Dashboard = () => {
                 </Tabs>
               ) : (
                 <div className="flex items-center justify-center h-[350px] text-muted-foreground">
-                  <p>No data to display.</p>
+                  <p>Tidak ada data untuk ditampilkan.</p>
                 </div>
               )}
             </CardContent>
@@ -62,7 +62,7 @@ const Dashboard = () => {
         <div className='lg:col-span-2'>
             <Card className="bg-card/50 backdrop-blur-sm border-white/10 h-[563px]">
                 <CardHeader>
-                    <CardTitle className="font-headline">Financial Health</CardTitle>
+                    <CardTitle className="font-headline">Kesehatan Finansial</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ScrollArea className="h-[470px]">

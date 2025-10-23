@@ -15,6 +15,10 @@ interface SummaryCardProps {
 }
 
 const SummaryCard = ({ title, value, icon: Icon, colorClass, index }: SummaryCardProps) => {
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
+  };
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -28,7 +32,7 @@ const SummaryCard = ({ title, value, icon: Icon, colorClass, index }: SummaryCar
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-bold font-numerical">
-            ${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {formatCurrency(value)}
           </div>
         </CardContent>
       </Card>

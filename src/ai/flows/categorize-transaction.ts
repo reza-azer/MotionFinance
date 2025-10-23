@@ -35,12 +35,12 @@ const prompt = ai.definePrompt({
   name: 'categorizeTransactionPrompt',
   input: {schema: CategorizeTransactionInputSchema},
   output: {schema: CategorizeTransactionOutputSchema},
-  prompt: `You are a personal finance expert. Your task is to categorize transactions based on their description.
+  prompt: `Anda adalah seorang ahli keuangan pribadi. Tugas Anda adalah mengkategorikan transaksi berdasarkan deskripsinya.
 
-  Here are some example categories: "Groceries", "Restaurants", "Rent", "Salary", "Utilities", "Entertainment", "Transportation", "Shopping", "Travel", "Investments", "Healthcare", "Other".
+  Berikut adalah beberapa contoh kategori: "Kebutuhan Pokok", "Restoran", "Sewa", "Gaji", "Utilitas", "Hiburan", "Transportasi", "Belanja", "Perjalanan", "Investasi", "Kesehatan", "Lainnya".
 
-  Based on the description, pick only one category.
-  Description: {{{description}}}`,
+  Berdasarkan deskripsi, pilih hanya satu kategori.
+  Deskripsi: {{{description}}}`,
 });
 
 const categorizeTransactionFlow = ai.defineFlow(

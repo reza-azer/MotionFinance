@@ -11,23 +11,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 const chartConfig = {
   income: {
-    label: "Income",
+    label: "Pemasukan",
     color: "hsl(var(--chart-2))",
   },
   expense: {
-    label: "Expenses",
+    label: "Pengeluaran",
     color: "hsl(var(--chart-3))",
   },
 }
 
 export default function IncomeExpenseChart() {
   const { transactions } = useTransactions()
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
+  };
 
   const monthlyData = React.useMemo(() => {
     const data: { [key: string]: { month: string, income: number, expense: number } } = {};
     
     transactions.forEach(t => {
-      const month = new Date(t.date).toLocaleString('default', { month: 'short' });
+      const month = new Date(t.date).toLocaleString('id-ID', { month: 'short' });
       if (!data[month]) {
         data[month] = { month, income: 0, expense: 0 };
       }
@@ -45,7 +48,7 @@ export default function IncomeExpenseChart() {
   if (monthlyData.length === 0) {
     return (
         <div className="flex items-center justify-center h-full text-muted-foreground">
-          <p>No data to display for income vs. expense trends.</p>
+          <p>Tidak ada data untuk ditampilkan untuk tren pemasukan vs. pengeluaran.</p>
         </div>
     );
   }
@@ -56,8 +59,11 @@ export default function IncomeExpenseChart() {
         <BarChart data={monthlyData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
-          <YAxis />
-          <Tooltip content={<ChartTooltipContent />} />
+          <YAxis tickFormatter={(value) => `Rp${Number(value) / 1000000}jt`} />
+          <Tooltip 
+            content={<ChartTooltipContent />} 
+            formatter={(value) => formatCurrency(value as number)} 
+          />
           <Legend />
           <Bar dataKey="income" fill={chartConfig.income.color} radius={[4, 4, 0, 0]} />
           <Bar dataKey="expense" fill={chartConfig.expense.color} radius={[4, 4, 0, 0]} />

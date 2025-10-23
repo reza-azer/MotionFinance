@@ -12,7 +12,7 @@ import { useTransactions } from '@/context/transactions-context'
 
 const chartConfig = {
   amount: {
-    label: "Amount",
+    label: "Jumlah",
   },
 } satisfies React.ComponentProps<typeof ChartContainer>["config"]
 
@@ -45,6 +45,9 @@ export default function ExpenseChart() {
         .sort((a, b) => b.amount - a.amount);
   }, [transactions]);
 
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
+  };
 
   const totalAmount = React.useMemo(() => {
     return processedData.reduce((acc, curr) => acc + curr.amount, 0)
@@ -65,7 +68,14 @@ export default function ExpenseChart() {
         <PieChart>
           <ChartTooltip
             cursor={false}
-            content={<ChartTooltipContent hideLabel />}
+            content={<ChartTooltipContent hideLabel formatter={(value, name, props) => {
+              return (
+                <div className="flex flex-col">
+                  <div>{props.payload.category}</div>
+                  <div className="font-bold">{formatCurrency(value as number)}</div>
+                </div>
+              )
+            }} />}
           />
           <Pie
             data={processedData}
@@ -80,7 +90,7 @@ export default function ExpenseChart() {
                 return (
                   <g>
                     <text x={cx} y={cy-10} dy={8} textAnchor="middle" fill={fill} className="text-xl font-numerical font-bold">
-                        ${Number(payload.amount).toFixed(2)}
+                        {formatCurrency(Number(payload.amount))}
                     </text>
                      <text x={cx} y={cy+10} dy={8} textAnchor="middle" fill="hsl(var(--muted-foreground))" className="text-sm">
                         {payload.category}
@@ -116,14 +126,14 @@ export default function ExpenseChart() {
                         y={viewBox.cy! - 12}
                         className="fill-muted-foreground text-sm"
                       >
-                        Total Expenses
+                        Total Pengeluaran
                       </tspan>
                       <tspan
                         x={viewBox.cx}
                         y={viewBox.cy! + 12}
                         className="fill-foreground text-2xl font-bold font-numerical"
                       >
-                        ${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        {formatCurrency(totalAmount)}
                       </tspan>
                     </text>
                     </>

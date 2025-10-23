@@ -45,30 +45,30 @@ const prompt = ai.definePrompt({
   name: 'analyzeSpendingPrompt',
   input: { schema: AnalyzeSpendingInputSchema },
   output: { schema: AnalyzeSpendingOutputSchema },
-  prompt: `You are a friendly and encouraging financial advisor for Gen Z and busy parents.
-Your goal is to provide simple, actionable advice to help users manage their cash flow without stress. Avoid complex jargon.
-Keep your feedback positive and focus on small, achievable steps.
+  prompt: `Anda adalah seorang penasihat keuangan yang ramah dan memberi semangat untuk Gen Z dan orang tua yang sibuk.
+Tujuan Anda adalah memberikan saran yang sederhana dan dapat ditindaklanjuti untuk membantu pengguna mengelola arus kas mereka tanpa stres. Hindari jargon yang rumit.
+Jaga agar umpan balik Anda tetap positif dan fokus pada langkah-langkah kecil yang dapat dicapai.
 
-Analyze the user's recent transactions and financial summary.
+Analisis transaksi terkini dan ringkasan keuangan pengguna.
 
-- Total Income: {{{totalIncome}}}
-- Total Expenses: {{{totalExpenses}}}
-- Transactions:
+- Total Pemasukan: {{{totalIncome}}}
+- Total Pengeluaran: {{{totalExpenses}}}
+- Transaksi:
 {{#each transactions}}
-- {{{description}}} ({{category}}): \${{{amount}}} on {{date}}
+- {{{description}}} ({{category}}): Rp{{{amount}}} pada {{date}}
 {{/each}}
 
-Based on this data, provide:
-1.  **A cashflowMessage**: A one-sentence summary of their cash flow. If they are positive, be encouraging. If negative, be gentle and optimistic about improving.
-2.  **A list of insights**: 2 to 3 short (one sentence each), actionable insights. Focus on the largest spending categories or potential areas for savings. Frame them as helpful tips, not criticisms.
+Berdasarkan data ini, berikan:
+1.  **cashflowMessage**: Ringkasan satu kalimat tentang arus kas mereka. Jika positif, berikan semangat. Jika negatif, berikan dorongan yang lembut dan optimis untuk perbaikan.
+2.  **daftar insights**: 2 hingga 3 wawasan singkat (masing-masing satu kalimat), yang dapat ditindaklanjuti. Fokus pada kategori pengeluaran terbesar atau area potensial untuk penghematan. Sajikan sebagai tips yang membantu, bukan kritik.
 
-Example Output:
+Contoh Output:
 {
-  "cashflowMessage": "You're in a great spot with more coming in than going out this month!",
+  "cashflowMessage": "Anda berada di posisi yang bagus dengan lebih banyak pemasukan daripada pengeluaran bulan ini!",
   "insights": [
-    "You're doing great at managing your 'Restaurants' spending.",
-    "A large portion of your spending is on 'Shopping', maybe look for deals next time?",
-    "Consider setting a small budget for 'Entertainment' to keep track of it."
+    "Anda hebat dalam mengelola pengeluaran 'Restoran' Anda.",
+    "Sebagian besar pengeluaran Anda adalah untuk 'Belanja', mungkin lain kali bisa mencari diskon?",
+    "Pertimbangkan untuk menetapkan anggaran kecil untuk 'Hiburan' agar lebih mudah dilacak."
   ]
 }
 `,
@@ -84,7 +84,7 @@ const analyzeSpendingFlow = ai.defineFlow(
     // Don't call the AI if there are no expenses
     if (input.totalExpenses === 0) {
       return {
-        cashflowMessage: "You haven't logged any expenses yet. Once you do, I can provide some insights!",
+        cashflowMessage: "Anda belum mencatat pengeluaran apa pun. Setelah Anda melakukannya, saya bisa memberikan beberapa wawasan!",
         insights: [],
       };
     }

@@ -19,9 +19,9 @@ const SummaryCards = () => {
   const balance = totalIncome - totalExpenses;
 
   const summaryData = [
-    { title: 'Total Income', value: totalIncome, icon: ArrowUpRight, colorClass: 'text-green-400' },
-    { title: 'Total Expenses', value: totalExpenses, icon: ArrowDownLeft, colorClass: 'text-red-400' },
-    { title: 'Balance', value: balance, icon: Scale, colorClass: 'text-accent' },
+    { title: 'Total Pemasukan', value: totalIncome, icon: ArrowUpRight, colorClass: 'text-green-400' },
+    { title: 'Total Pengeluaran', value: totalExpenses, icon: ArrowDownLeft, colorClass: 'text-red-400' },
+    { title: 'Saldo', value: balance, icon: Scale, colorClass: 'text-accent' },
   ];
 
   return (
