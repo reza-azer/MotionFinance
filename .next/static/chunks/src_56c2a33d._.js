@@ -817,11 +817,11 @@ function ExpenseChart() {
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("text", {
                                             x: cx,
-                                            y: cy - 10,
+                                            y: cy - 8,
                                             textAnchor: "middle",
                                             dominantBaseline: "central",
                                             fill: fill,
-                                            className: "text-sm font-bold",
+                                            className: "text-xs sm:text-sm font-bold",
                                             style: {
                                                 transition: 'opacity 0.3s ease-in-out',
                                                 opacity: 1
@@ -834,11 +834,11 @@ function ExpenseChart() {
                                         }, void 0),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("text", {
                                             x: cx,
-                                            y: cy + 12,
+                                            y: cy + 10,
                                             textAnchor: "middle",
                                             dominantBaseline: "central",
                                             fill: fill,
-                                            className: "text-2xl font-numerical font-bold",
+                                            className: "text-lg sm:text-2xl font-numerical font-bold",
                                             style: {
                                                 transition: 'opacity 0.3s ease-in-out',
                                                 opacity: 1
@@ -932,8 +932,8 @@ function ExpenseChart() {
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tspan", {
                                                     x: viewBox.cx,
-                                                    y: viewBox.cy - 12,
-                                                    className: "fill-muted-foreground text-sm",
+                                                    y: viewBox.cy - 10,
+                                                    className: "fill-muted-foreground text-xs sm:text-sm",
                                                     children: "Total Pengeluaran"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/dashboard/charts/expense-chart.tsx",
@@ -942,8 +942,8 @@ function ExpenseChart() {
                                                 }, void 0),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tspan", {
                                                     x: viewBox.cx,
-                                                    y: viewBox.cy + 12,
-                                                    className: "fill-foreground text-2xl font-bold font-numerical",
+                                                    y: viewBox.cy + 10,
+                                                    className: "fill-foreground text-lg sm:text-2xl font-bold font-numerical",
                                                     children: formatCurrency(totalAmount)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/dashboard/charts/expense-chart.tsx",

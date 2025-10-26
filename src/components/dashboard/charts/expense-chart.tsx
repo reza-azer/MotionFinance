@@ -55,7 +55,7 @@ export default function ExpenseChart() {
     setActiveIndex(index);
   }, [setActiveIndex]);
 
-  const onPieLeave = React.useCallback(() => {
+  const onPieLeave = React. useCallback(() => {
     setActiveIndex(null);
   }, [setActiveIndex]);
 
@@ -97,10 +97,10 @@ export default function ExpenseChart() {
                       </filter>
                     </defs>
                     <g style={{ transition: 'opacity 0.3s ease-in-out', opacity: 1 }}>
-                        <text x={cx} y={cy - 10} textAnchor="middle" dominantBaseline="central" fill={fill} className="text-sm font-bold" style={{transition: 'opacity 0.3s ease-in-out', opacity: 1}}>
+                        <text x={cx} y={cy - 8} textAnchor="middle" dominantBaseline="central" fill={fill} className="text-xs sm:text-sm font-bold" style={{transition: 'opacity 0.3s ease-in-out', opacity: 1}}>
                           {payload.category}
                         </text>
-                         <text x={cx} y={cy + 12} textAnchor="middle" dominantBaseline="central" fill={fill} className="text-2xl font-numerical font-bold" style={{transition: 'opacity 0.3s ease-in-out', opacity: 1}}>
+                         <text x={cx} y={cy + 10} textAnchor="middle" dominantBaseline="central" fill={fill} className="text-lg sm:text-2xl font-numerical font-bold" style={{transition: 'opacity 0.3s ease-in-out', opacity: 1}}>
                             {`${percentage}%`}
                         </text>
                     </g>
@@ -158,15 +158,15 @@ export default function ExpenseChart() {
                       >
                         <tspan
                           x={viewBox.cx}
-                          y={viewBox.cy! - 12}
-                          className="fill-muted-foreground text-sm"
+                          y={viewBox.cy! - 10}
+                          className="fill-muted-foreground text-xs sm:text-sm"
                         >
                           Total Pengeluaran
                         </tspan>
                         <tspan
                           x={viewBox.cx}
-                          y={viewBox.cy! + 12}
-                          className="fill-foreground text-2xl font-bold font-numerical"
+                          y={viewBox.cy! + 10}
+                          className="fill-foreground text-lg sm:text-2xl font-bold font-numerical"
                         >
                           {formatCurrency(totalAmount)}
                         </tspan>
