@@ -24,7 +24,7 @@ const TransactionsPage = () => {
             <div className="lg:col-span-3">
                  <Card className="bg-card/50 backdrop-blur-sm border-white/10 h-full">
                     <CardHeader>
-                        <CardTitle className="font-headline">Transaksi Terkini</CardTitle>
+                        <CardTitle className="font-headline">Semua Transaksi</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <TransactionList />

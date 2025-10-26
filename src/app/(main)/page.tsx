@@ -32,15 +32,15 @@ const DashboardPage = () => {
                     </CardHeader>
                     <CardContent>
                       {transactions.length > 0 ? (
-                        <Tabs defaultValue="breakdown">
-                            <TabsList>
-                                <TabsTrigger value="breakdown">Rincian Pengeluaran</TabsTrigger>
-                                <TabsTrigger value="trends">Pemasukan vs. Pengeluaran</TabsTrigger>
-                                <TabsTrigger value="daily">Pengeluaran Harian</TabsTrigger>
+                        <Tabs defaultValue="breakdown" className='w-full'>
+                            <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 h-auto sm:h-10">
+                                <TabsTrigger value="breakdown">Rincian</TabsTrigger>
+                                <TabsTrigger value="trends">Pemasukan vs Pengeluaran</TabsTrigger>
+                                <TabsTrigger value="daily">Tren Harian</TabsTrigger>
                             </TabsList>
                             <TabsContent value="breakdown">
                                 <div className="h-[350px]">
-                                  {expenseTransactions.length > 0 ? <ExpenseChart /> : <div className="flex items-center justify-center h-full text-muted-foreground"><p>Tidak ada data pengeluaran untuk diagram pai.</p></div>}
+                                  {expenseTransactions.length > 0 ? <ExpenseChart /> : <div className="flex items-center justify-center h-full text-muted-foreground"><p>Tidak ada data pengeluaran.</p></div>}
                                 </div>
                             </TabsContent>
                             <TabsContent value="trends">
@@ -68,7 +68,7 @@ const DashboardPage = () => {
                             <CardTitle className="font-headline">Kesehatan Finansial</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <ScrollArea className="h-[470px]">
+                          <ScrollArea className="h-[470px] px-2">
                             <FinancialHealth />
                           </ScrollArea>
                         </CardContent>

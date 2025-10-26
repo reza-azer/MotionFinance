@@ -1,9 +1,11 @@
+
 import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster";
 import { TransactionsProvider } from '@/context/transactions-context';
 import './globals.css';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import { Sheet } from '@/components/ui/sheet';
 
 export const metadata: Metadata = {
   title: 'MotionFinance',
@@ -24,11 +26,13 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased flex flex-col min-h-screen">
         <TransactionsProvider>
-          <Header />
-          <div className="flex-grow">
-            {children}
-          </div>
-          <Footer />
+          <Sheet>
+            <Header />
+            <div className="flex-grow">
+              {children}
+            </div>
+            <Footer />
+          </Sheet>
         </TransactionsProvider>
         <Toaster />
       </body>
