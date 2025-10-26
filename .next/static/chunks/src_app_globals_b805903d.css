@@ -703,6 +703,10 @@ body {
   height: auto;
 }
 
+.h-\[300px\] {
+  height: 300px;
+}
+
 .max-h-96 {
   max-height: 24rem;
 }
@@ -2607,6 +2611,10 @@ body {
 
   .sm\:h-10 {
     height: 2.5rem;
+  }
+
+  .sm\:h-\[350px\] {
+    height: 350px;
   }
 
   .sm\:max-w-sm {

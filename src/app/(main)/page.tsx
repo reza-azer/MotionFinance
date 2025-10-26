@@ -39,17 +39,17 @@ const DashboardPage = () => {
                                 <TabsTrigger value="daily">Tren Harian</TabsTrigger>
                             </TabsList>
                             <TabsContent value="breakdown">
-                                <div className="h-[350px]">
+                                <div className="h-[300px] sm:h-[350px]">
                                   {expenseTransactions.length > 0 ? <ExpenseChart /> : <div className="flex items-center justify-center h-full text-muted-foreground"><p>Tidak ada data pengeluaran.</p></div>}
                                 </div>
                             </TabsContent>
                             <TabsContent value="trends">
-                              <div className="h-[350px]">
+                              <div className="h-[300px] sm:h-[350px]">
                                 <IncomeExpenseChart />
                               </div>
                             </TabsContent>
                             <TabsContent value="daily">
-                              <div className="h-[350px]">
+                              <div className="h-[300px] sm:h-[350px]">
                                 <ExpenseTrendChart />
                               </div>
                             </TabsContent>
