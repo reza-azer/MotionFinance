@@ -15,7 +15,7 @@ import ExpenseTrendChart from '@/components/dashboard/charts/expense-trend-chart
 import TransactionList from '@/components/transactions/transaction-list';
 
 const DashboardPage = () => {
-  const { transactions } = useTransactions();
+  const { transactions, monthlyIncome } = useTransactions();
   const expenseTransactions = transactions.filter(t => t.type === 'expense');
 
   return (
@@ -23,7 +23,7 @@ const DashboardPage = () => {
           <div className="flex flex-col gap-12">
             <section id="dashboard" className="space-y-8">
               <SummaryCards />
-              <BudgetTracker />
+              {monthlyIncome > 0 ? <BudgetTracker /> : null}
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                 <div className='lg:col-span-3'>
                   <Card className="bg-card/50 backdrop-blur-sm border-white/10">
