@@ -708,7 +708,7 @@ function ExpenseChart() {
     if (processedData.length === 0) return null;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$chart$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ChartContainer"], {
         config: chartConfig,
-        className: "mx-auto aspect-square h-full",
+        className: "mx-0 sm:mx-auto aspect-square h-full",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$chart$2f$PieChart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["PieChart"], {
             onMouseLeave: onPieLeave,
             children: [
@@ -905,7 +905,8 @@ function ExpenseChart() {
                     data: processedData,
                     dataKey: "amount",
                     nameKey: "category",
-                    innerRadius: "60%",
+                    innerRadius: "65%",
+                    outerRadius: "85%",
                     strokeWidth: 0,
                     onMouseEnter: onPieEnter,
                     children: [
@@ -913,7 +914,7 @@ function ExpenseChart() {
                                 fill: entry.fill
                             }, `cell-${index}`, false, {
                                 fileName: "[project]/src/components/dashboard/charts/expense-chart.tsx",
-                                lineNumber: 146,
+                                lineNumber: 147,
                                 columnNumber: 17
                             }, this)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Label$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -937,7 +938,7 @@ function ExpenseChart() {
                                                     children: "Total Pengeluaran"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/dashboard/charts/expense-chart.tsx",
-                                                    lineNumber: 159,
+                                                    lineNumber: 160,
                                                     columnNumber: 25
                                                 }, void 0),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tspan", {
@@ -947,25 +948,25 @@ function ExpenseChart() {
                                                     children: formatCurrency(totalAmount)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/dashboard/charts/expense-chart.tsx",
-                                                    lineNumber: 166,
+                                                    lineNumber: 167,
                                                     columnNumber: 25
                                                 }, void 0)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/dashboard/charts/expense-chart.tsx",
-                                            lineNumber: 153,
+                                            lineNumber: 154,
                                             columnNumber: 23
                                         }, void 0)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/dashboard/charts/expense-chart.tsx",
-                                        lineNumber: 152,
+                                        lineNumber: 153,
                                         columnNumber: 21
                                     }, void 0);
                                 }
                             }
                         }, void 0, false, {
                             fileName: "[project]/src/components/dashboard/charts/expense-chart.tsx",
-                            lineNumber: 148,
+                            lineNumber: 149,
                             columnNumber: 13
                         }, this)
                     ]
@@ -3571,7 +3572,7 @@ const DashboardPage = ()=>{
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TabsContent"], {
                                                             value: "breakdown",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "h-[300px] sm:h-[350px]",
+                                                                className: "h-[280px] sm:h-[350px]",
                                                                 children: expenseTransactions.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$dashboard$2f$charts$2f$expense$2d$chart$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                                                     fileName: "[project]/src/app/(main)/page.tsx",
                                                                     lineNumber: 43,

@@ -65,7 +65,7 @@ export default function ExpenseChart() {
   return (
       <ChartContainer
         config={chartConfig}
-        className="mx-auto aspect-square h-full"
+        className="mx-0 sm:mx-auto aspect-square h-full"
       >
         <PieChart onMouseLeave={onPieLeave}>
           <ChartTooltip
@@ -138,7 +138,8 @@ export default function ExpenseChart() {
             data={processedData}
             dataKey="amount"
             nameKey="category"
-            innerRadius="60%"
+            innerRadius="65%"
+            outerRadius="85%"
             strokeWidth={0}
             onMouseEnter={onPieEnter}
           >
