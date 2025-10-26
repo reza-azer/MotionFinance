@@ -715,6 +715,10 @@ body {
   min-height: 100svh;
 }
 
+.min-h-\[563px\] {
+  min-height: 563px;
+}
+
 .w-0 {
   width: 0;
 }
@@ -2627,6 +2631,10 @@ body {
 
   .md\:flex {
     display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
   }
 
   .md\:max-w-\[420px\] {
