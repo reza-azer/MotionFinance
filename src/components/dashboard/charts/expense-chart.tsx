@@ -65,7 +65,7 @@ export default function ExpenseChart() {
   return (
       <ChartContainer
         config={chartConfig}
-        className="mx-0 sm:mx-auto aspect-square h-full"
+        className="mx-auto aspect-square h-full"
       >
         <PieChart onMouseLeave={onPieLeave}>
           <ChartTooltip
