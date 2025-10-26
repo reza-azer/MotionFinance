@@ -2691,6 +2691,10 @@ body {
     grid-column: span 3 / span 3;
   }
 
+  .lg\:hidden {
+    display: none;
+  }
+
   .lg\:grid-cols-5 {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }

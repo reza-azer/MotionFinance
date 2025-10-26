@@ -26,7 +26,7 @@ export default function DashboardLayout({
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-       <Sidebar>
+       <Sidebar variant="inset" collapsible="icon">
         <SidebarHeader className="p-4">
           <Logo />
         </SidebarHeader>
