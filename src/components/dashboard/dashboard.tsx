@@ -33,18 +33,22 @@ export default function DashboardLayout({
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-                <Link href="/" legacyBehavior passHref>
+                <Link href="/">
                     <SidebarMenuButton asChild isActive={isActive('/')} tooltip="Dashboard">
-                        <LayoutDashboard />
-                        <span>Dasbor</span>
+                        <>
+                            <LayoutDashboard />
+                            <span>Dasbor</span>
+                        </>
                     </SidebarMenuButton>
                 </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <Link href="/transactions" legacyBehavior passHref>
+                <Link href="/transactions">
                     <SidebarMenuButton asChild isActive={isActive('/transactions')} tooltip="Transaksi">
-                        <PlusCircle />
-                        <span>Transaksi</span>
+                        <>
+                            <PlusCircle />
+                            <span>Transaksi</span>
+                        </>
                     </SidebarMenuButton>
                 </Link>
             </SidebarMenuItem>

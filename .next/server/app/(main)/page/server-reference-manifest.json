@@ -5,15 +5,10 @@
         "app/(main)/page": {
           "moduleId": "[project]/.next-internal/server/app/(main)/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/analyze-spending.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/generate-budget-feedback.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
-        },
-        "app/page": {
-          "moduleId": "[project]/.next-internal/server/app/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/analyze-spending.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/generate-budget-feedback.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
         }
       },
       "layer": {
-        "app/(main)/page": "action-browser",
-        "app/page": "action-browser"
+        "app/(main)/page": "action-browser"
       }
     },
     "40c122e5ba2b95ce79d508f18045c80639422e4ad1": {
@@ -21,18 +16,12 @@
         "app/(main)/page": {
           "moduleId": "[project]/.next-internal/server/app/(main)/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/analyze-spending.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/generate-budget-feedback.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
-        },
-        "app/page": {
-          "moduleId": "[project]/.next-internal/server/app/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/analyze-spending.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/generate-budget-feedback.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
         }
       },
       "layer": {
-        "app/(main)/page": "action-browser",
-        "app/page": "action-browser"
+        "app/(main)/page": "action-browser"
       }
     }
   },
-  "edge": {},
-  "encryptionKey": "f3kvj/TgVWUPEmhSbsOnoungRsDEIZgzVb2+zfaigEg="
+  "edge": {}
 }
