@@ -9,12 +9,12 @@ import {
   SidebarFooter,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { LayoutDashboard, PlusCircle } from 'lucide-react';
 import Logo from '@/components/logo';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Header from '../layout/header';
 
 export default function DashboardLayout({
   children,
